@@ -1403,6 +1403,9 @@ img {
   .pricing-table th, .pricing-table td {
     padding: 10px 4px !important;
   }
+  .recommended-th {
+    padding-top: 24px !important;
+  }
   .pricing-table .feature-name {
     font-size: 0.7rem;
     line-height: 1.2;
