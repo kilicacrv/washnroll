@@ -447,7 +447,7 @@ img {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background-image: url('assets/hero_car_wash.jpg');
+  background-image: url('hero_car_wash.jpg');
   background-size: cover;
   background-position: center;
   padding-top: 120px;
@@ -1389,4 +1389,53 @@ img {
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.5);
   font-weight: 500;
+}
+
+/* Compact Mobile Table Optimization */
+@media (max-width: 768px) {
+  .pricing-table-wrapper {
+    margin: 0 -15px 30px -15px;
+    padding-bottom: 5px !important;
+  }
+  .pricing-table {
+    min-width: 100% !important;
+  }
+  .pricing-table th, .pricing-table td {
+    padding: 10px 4px !important;
+  }
+  .pricing-table .feature-name {
+    font-size: 0.7rem;
+    line-height: 1.2;
+    padding: 10px 6px !important;
+    max-width: 90px;
+  }
+  .th-content .tier-name {
+    font-size: 0.85rem !important;
+  }
+  .th-content .visits-label {
+    font-size: 0.65rem !important;
+    margin: 2px 0 6px;
+  }
+  .th-content .price-val {
+    font-size: 1.5rem !important;
+  }
+  .th-content .currency, .th-content .freq {
+    font-size: 0.75rem !important;
+  }
+  .feature-bonus {
+    font-size: 0.6rem !important;
+    margin-top: 2px;
+  }
+  .btn-table-cta {
+    padding: 8px 4px !important;
+    font-size: 0.75rem !important;
+  }
+  .check-icon {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  .recommended-badge-top {
+    font-size: 0.55rem;
+    padding: 3px 0;
+  }
 }
