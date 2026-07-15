@@ -1403,6 +1403,9 @@ img {
   .pricing-table th, .pricing-table td {
     padding: 10px 4px !important;
   }
+  .pricing-table th {
+    padding-top: 26px !important;
+  }
   .pricing-table .recommended-th {
     padding-top: 26px !important;
   }
@@ -1414,10 +1417,20 @@ img {
   }
   .th-content .tier-name {
     font-size: 0.85rem !important;
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
   .th-content .visits-label {
     font-size: 0.65rem !important;
     margin: 2px 0 6px;
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
   .th-content .price-val {
     font-size: 1.5rem !important;
