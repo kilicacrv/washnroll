@@ -1433,10 +1433,10 @@ img {
     text-align: center;
   }
   .th-content .price-val {
-    font-size: 1.5rem !important;
+    font-size: 1.1rem !important;
   }
   .th-content .currency, .th-content .freq {
-    font-size: 0.75rem !important;
+    font-size: 0.65rem !important;
   }
   .feature-bonus {
     font-size: 0.6rem !important;
