@@ -150,36 +150,44 @@
 
       <!-- SIGNATURE PLAN SECTION -->
       <h3 class="subsection-title" style="text-align: center; margin-bottom: 24px; color: var(--navy);">SIGNATURE PLAN</h3>
-      <div class="pricing-grid signature-card-container" style="gap: 15px; margin-bottom: 40px;">
+      <div class="signature-list-container" style="max-width: 600px; margin: 0 auto 40px; background: var(--white); border-radius: 16px; border: 1px solid #e5e7eb; box-shadow: var(--shadow-sm); overflow: hidden;">
+        
         <!-- Package 1: Exterior Only -->
-        <div class="price-card minimal-card" style="border-top: 4px solid var(--cyan); background-color: var(--white); border-radius: 16px; border: 1px solid #e5e7eb; padding: 24px; box-shadow: var(--shadow-sm); text-align: center;">
-          <h4 style="font-size: 1.25rem; font-weight: 800; color: #4b5563; margin-bottom: 5px;">Exterior Only</h4>
-          <div style="margin-bottom: 20px;">
-            <span style="font-size: 1rem; font-weight: 700; color: var(--text-dark);">AED</span>
-            <span class="price-val" data-plan="exterior_detail" style="font-size: 2.5rem; font-weight: 900; color: var(--text-dark);">249</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #e5e7eb;">
+          <div style="text-align: left;">
+            <h4 style="font-size: 1.1rem; font-weight: 700; color: #4b5563; margin-bottom: 2px;">Exterior Only</h4>
+            <div style="color: var(--navy); font-weight: 800;">
+              <span style="font-size: 0.9rem;">AED</span> 
+              <span class="price-val" data-plan="exterior_detail" style="font-size: 1.25rem;">249</span>
+            </div>
           </div>
-          <button class="btn btn-outline w-full checkout-btn" data-plan-id="exterior_detail" data-plan-name="Exterior Only">Book Now</button>
+          <button class="btn btn-outline checkout-btn" data-plan-id="exterior_detail" data-plan-name="Exterior Only" style="padding: 8px 20px; font-size: 0.9rem; min-width: 100px;">Book</button>
         </div>
 
         <!-- Package 2: Interior Only -->
-        <div class="price-card minimal-card" style="border-top: 4px solid var(--navy); background-color: var(--white); border-radius: 16px; border: 1px solid #e5e7eb; padding: 24px; box-shadow: var(--shadow-sm); text-align: center;">
-          <h4 style="font-size: 1.25rem; font-weight: 800; color: #4b5563; margin-bottom: 5px;">Interior Only</h4>
-          <div style="margin-bottom: 20px;">
-            <span style="font-size: 1rem; font-weight: 700; color: var(--text-dark);">AED</span>
-            <span class="price-val" data-plan="interior_detail" style="font-size: 2.5rem; font-weight: 900; color: var(--text-dark);">249</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #e5e7eb;">
+          <div style="text-align: left;">
+            <h4 style="font-size: 1.1rem; font-weight: 700; color: #4b5563; margin-bottom: 2px;">Interior Only</h4>
+            <div style="color: var(--navy); font-weight: 800;">
+              <span style="font-size: 0.9rem;">AED</span> 
+              <span class="price-val" data-plan="interior_detail" style="font-size: 1.25rem;">249</span>
+            </div>
           </div>
-          <button class="btn btn-outline w-full checkout-btn" data-plan-id="interior_detail" data-plan-name="Interior Only">Book Now</button>
+          <button class="btn btn-outline checkout-btn" data-plan-id="interior_detail" data-plan-name="Interior Only" style="padding: 8px 20px; font-size: 0.9rem; min-width: 100px;">Book</button>
         </div>
 
         <!-- Package 3: Both (Full) -->
-        <div class="price-card minimal-card" style="border-top: 4px solid #666; background-color: var(--white); border-radius: 16px; border: 1px solid #e5e7eb; padding: 24px; box-shadow: var(--shadow-sm); text-align: center;">
-          <h4 style="font-size: 1.25rem; font-weight: 800; color: #4b5563; margin-bottom: 5px;">Exterior & Interior</h4>
-          <div style="margin-bottom: 20px;">
-            <span style="font-size: 1rem; font-weight: 700; color: var(--text-dark);">AED</span>
-            <span class="price-val" data-plan="full_detail" style="font-size: 2.5rem; font-weight: 900; color: var(--text-dark);">399</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background-color: #f8fafc;">
+          <div style="text-align: left;">
+            <h4 style="font-size: 1.1rem; font-weight: 800; color: #4b5563; margin-bottom: 2px;">Exterior & Interior</h4>
+            <div style="color: var(--cyan); font-weight: 800;">
+              <span style="font-size: 0.9rem;">AED</span> 
+              <span class="price-val" data-plan="full_detail" style="font-size: 1.25rem;">399</span>
+            </div>
           </div>
-          <button class="btn btn-outline w-full checkout-btn" data-plan-id="full_detail" data-plan-name="Exterior & Interior">Book Now</button>
+          <button class="btn btn-navy checkout-btn" data-plan-id="full_detail" data-plan-name="Exterior & Interior" style="padding: 8px 20px; font-size: 0.9rem; min-width: 100px;">Book</button>
         </div>
+
       </div>
 
       <!-- MEMBERSHIP PLANS TITLE -->
