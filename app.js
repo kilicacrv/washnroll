@@ -109,19 +109,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   tabButtons.forEach(btn => {
     btn.addEventListener('click', (e) => {
-      // Remove active from all tabs
+      const activeTab = e.currentTarget;
+      const vehicleType = activeTab.getAttribute('data-vehicle');
+
+      // Update active state for all tabs
       tabButtons.forEach(button => {
-        button.classList.remove('active');
-        button.setAttribute('aria-selected', 'false');
+        if (button.getAttribute('data-vehicle') === vehicleType) {
+          button.classList.add('active');
+          button.setAttribute('aria-selected', 'true');
+        } else {
+          button.classList.remove('active');
+          button.setAttribute('aria-selected', 'false');
+        }
       });
 
-      // Add active to current
-      const activeTab = e.currentTarget;
-      activeTab.classList.add('active');
-      activeTab.setAttribute('aria-selected', 'true');
-
-      // Get vehicle and trigger update
-      const vehicleType = activeTab.getAttribute('data-vehicle');
+      // Update prices and links
       updatePricing(vehicleType);
     });
   });
