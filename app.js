@@ -52,19 +52,28 @@ document.addEventListener('DOMContentLoaded', () => {
       essential: '219',
       premium: '349',
       elite: '549',
-      maintenance: '399'
+      maintenance: '399',
+      exterior_detail: '249',
+      interior_detail: '249',
+      full_detail: '399'
     },
     midsuv: {
       essential: '269',
       premium: '449',
       elite: '649',
-      maintenance: '499'
+      maintenance: '499',
+      exterior_detail: '279',
+      interior_detail: '279',
+      full_detail: '449'
     },
     lrgsuv: {
       essential: '319',
       premium: '549',
       elite: '749',
-      maintenance: '599'
+      maintenance: '599',
+      exterior_detail: '309',
+      interior_detail: '309',
+      full_detail: '499'
     }
   };
 

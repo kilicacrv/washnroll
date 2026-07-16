@@ -150,13 +150,68 @@
 
       <!-- SIGNATURE PLAN SECTION -->
       <h3 class="subsection-title" style="text-align: center; margin-bottom: 24px; color: var(--navy);">SIGNATURE PLAN</h3>
-      <div class="pricing-cards-container signature-card-container" style="max-width: 400px; margin: 0 auto 50px;">
-        <div class="price-card" style="border-top: 4px solid #666; background-color: var(--white); border-radius: var(--border-radius-lg); border: 1px solid #e5e7eb; padding: 36px 24px; box-shadow: var(--shadow-md);">
-          <span class="card-tier-name font-gray" style="font-size: 1.5rem; display: block; text-align: center; font-weight: 800; color: #4b5563; margin-bottom: 8px;">Signature Detail</span>
+      <div class="pricing-grid signature-card-container">
+        <!-- Package 1: Exterior Only -->
+        <div class="price-card" style="border-top: 4px solid var(--cyan); background-color: var(--white); border-radius: var(--border-radius-lg); border: 1px solid #e5e7eb; padding: 36px 24px; box-shadow: var(--shadow-md);">
+          <span class="card-tier-name font-gray" style="font-size: 1.5rem; display: block; text-align: center; font-weight: 800; color: #4b5563; margin-bottom: 8px;">Exterior Detail</span>
           <span class="card-visits-label" style="display: block; text-align: center; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; margin-bottom: 20px;">One time service</span>
           <div class="card-price-box" style="text-align: center; margin-bottom: 30px;">
             <span class="currency" style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark); vertical-align: top;">AED</span>
-            <span class="price-val" data-plan="maintenance" style="font-size: 3rem; font-weight: 900; line-height: 1; color: var(--text-dark);">399</span>
+            <span class="price-val" data-plan="exterior_detail" style="font-size: 3rem; font-weight: 900; line-height: 1; color: var(--text-dark);">249</span>
+          </div>
+
+          <ul class="card-features-list" style="margin-bottom: 32px; list-style: none; padding: 0;">
+            <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;">
+              <svg class="check-icon-small" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.5" style="width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-dark);">Exterior Steam Wash & Wax</span>
+            </li>
+            <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;">
+              <svg class="check-icon-small" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2.5" style="width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-dark);">Wheel & Tire Deep Clean</span>
+            </li>
+          </ul>
+
+          <button class="btn btn-outline w-full checkout-btn" data-plan-id="exterior_detail" data-plan-name="Exterior Detail" style="display: flex; justify-content: center; width: 100%;">Book Now</button>
+        </div>
+
+        <!-- Package 2: Interior Only -->
+        <div class="price-card" style="border-top: 4px solid var(--navy); background-color: var(--white); border-radius: var(--border-radius-lg); border: 1px solid #e5e7eb; padding: 36px 24px; box-shadow: var(--shadow-md);">
+          <span class="card-tier-name font-gray" style="font-size: 1.5rem; display: block; text-align: center; font-weight: 800; color: #4b5563; margin-bottom: 8px;">Interior Detail</span>
+          <span class="card-visits-label" style="display: block; text-align: center; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; margin-bottom: 20px;">One time service</span>
+          <div class="card-price-box" style="text-align: center; margin-bottom: 30px;">
+            <span class="currency" style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark); vertical-align: top;">AED</span>
+            <span class="price-val" data-plan="interior_detail" style="font-size: 3rem; font-weight: 900; line-height: 1; color: var(--text-dark);">249</span>
+          </div>
+
+          <ul class="card-features-list" style="margin-bottom: 32px; list-style: none; padding: 0;">
+            <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;">
+              <svg class="check-icon-small" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.5" style="width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-dark);">Interior Steam Deep Clean</span>
+            </li>
+            <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;">
+              <svg class="check-icon-small" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="2.5" style="width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-dark);">Vacuum & Dashboard Care</span>
+            </li>
+          </ul>
+
+          <button class="btn btn-outline w-full checkout-btn" data-plan-id="interior_detail" data-plan-name="Interior Detail" style="display: flex; justify-content: center; width: 100%;">Book Now</button>
+        </div>
+
+        <!-- Package 3: Full Detail -->
+        <div class="price-card" style="border-top: 4px solid #666; background-color: var(--white); border-radius: var(--border-radius-lg); border: 1px solid #e5e7eb; padding: 36px 24px; box-shadow: var(--shadow-md);">
+          <span class="card-tier-name font-gray" style="font-size: 1.5rem; display: block; text-align: center; font-weight: 800; color: #4b5563; margin-bottom: 8px;">Full Detail</span>
+          <span class="card-visits-label" style="display: block; text-align: center; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; margin-bottom: 20px;">One time service</span>
+          <div class="card-price-box" style="text-align: center; margin-bottom: 30px;">
+            <span class="currency" style="font-size: 1.25rem; font-weight: 700; color: var(--text-dark); vertical-align: top;">AED</span>
+            <span class="price-val" data-plan="full_detail" style="font-size: 3rem; font-weight: 900; line-height: 1; color: var(--text-dark);">399</span>
           </div>
 
           <ul class="card-features-list" style="margin-bottom: 32px; list-style: none; padding: 0;">
@@ -166,9 +221,15 @@
               </svg>
               <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-dark);">Exterior Steam Detailing</span>
             </li>
+            <li style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px;">
+              <svg class="check-icon-small" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2.5" style="width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span style="font-size: 0.9rem; font-weight: 500; color: var(--text-dark);">Interior Steam Deep Clean</span>
+            </li>
           </ul>
 
-          <button class="btn btn-outline w-full checkout-btn" data-plan-id="maintenance" data-plan-name="Signature Detail" style="display: flex; justify-content: center; width: 100%;">Book Now</button>
+          <button class="btn btn-outline w-full checkout-btn" data-plan-id="full_detail" data-plan-name="Full Detail" style="display: flex; justify-content: center; width: 100%;">Book Now</button>
         </div>
       </div>
 
