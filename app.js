@@ -167,7 +167,107 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalBaseTotal = document.getElementById('modal-base-total');
     const modalAddonsTotal = document.getElementById('modal-addons-total');
     const modalGrandTotal = document.getElementById('modal-grand-total');
+    const modalTotalsContainer = document.getElementById('modal-totals-container');
+    
+    // Wizard Steps
+    let currentStep = 1;
+    const step1 = document.getElementById('wizard-step-1');
+    const step2 = document.getElementById('wizard-step-2');
+    const step3 = document.getElementById('wizard-step-3');
+    
+    const backBtn = document.getElementById('wizard-back-btn');
+    const nextBtn = document.getElementById('wizard-next-btn');
     const confirmBtn = document.getElementById('confirm-booking-btn');
+
+    const stepInd1 = document.getElementById('step-ind-1');
+    const stepInd2 = document.getElementById('step-ind-2');
+    const stepInd3 = document.getElementById('step-ind-3');
+    const stepLines = document.querySelectorAll('.step-line');
+
+    // Wizard Data
+    let selectedDate = '';
+    let selectedTime = '';
+    
+    // Set min date to today
+    const dateInput = document.getElementById('booking-date');
+    if (dateInput) {
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.min = today;
+    }
+
+    const timeSlotBtns = document.querySelectorAll('.time-slot-btn');
+    timeSlotBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        timeSlotBtns.forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        selectedTime = e.target.getAttribute('data-time');
+      });
+    });
+
+    const updateWizardUI = () => {
+      // Hide all steps
+      step1.style.display = 'none';
+      step2.style.display = 'none';
+      step3.style.display = 'none';
+      
+      // Update Indicators
+      stepInd1.className = 'step-indicator' + (currentStep >= 1 ? ' active' : '') + (currentStep > 1 ? ' completed' : '');
+      stepInd2.className = 'step-indicator' + (currentStep >= 2 ? ' active' : '') + (currentStep > 2 ? ' completed' : '');
+      stepInd3.className = 'step-indicator' + (currentStep >= 3 ? ' active' : '');
+      
+      if (stepLines.length > 1) {
+        stepLines[0].className = 'step-line' + (currentStep > 1 ? ' active' : '');
+        stepLines[1].className = 'step-line' + (currentStep > 2 ? ' active' : '');
+      }
+
+      if (currentStep === 1) {
+        step1.style.display = 'block';
+        backBtn.style.display = 'none';
+        nextBtn.style.display = 'block';
+        nextBtn.textContent = 'Next: Choose Time';
+        confirmBtn.style.display = 'none';
+        modalTotalsContainer.style.display = 'flex';
+      } else if (currentStep === 2) {
+        step2.style.display = 'block';
+        backBtn.style.display = 'block';
+        nextBtn.style.display = 'block';
+        nextBtn.textContent = 'Next: Delivery Address';
+        confirmBtn.style.display = 'none';
+        modalTotalsContainer.style.display = 'none';
+      } else if (currentStep === 3) {
+        step3.style.display = 'block';
+        backBtn.style.display = 'block';
+        nextBtn.style.display = 'none';
+        confirmBtn.style.display = 'flex';
+        modalTotalsContainer.style.display = 'none';
+      }
+    };
+
+    nextBtn.addEventListener('click', () => {
+      if (currentStep === 1) {
+        currentStep = 2;
+        updateWizardUI();
+      } else if (currentStep === 2) {
+        selectedDate = dateInput.value;
+        if (!selectedDate) {
+          alert('Please select a date.');
+          return;
+        }
+        if (!selectedTime) {
+          alert('Please select a time slot.');
+          return;
+        }
+        currentStep = 3;
+        updateWizardUI();
+      }
+    });
+
+    backBtn.addEventListener('click', () => {
+      if (currentStep > 1) {
+        currentStep--;
+        updateWizardUI();
+      }
+    });
 
     // Parse add-ons from the DOM
     const availableAddons = [];
@@ -220,7 +320,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const openModal = (planId, planName) => {
       currentPlanName = planName;
       currentPlanBasePrice = parseInt(pricingData[currentVehicleType][planId], 10);
-      selectedAddons = []; // Reset selections
+      
+      // Reset State
+      selectedAddons = [];
+      currentStep = 1;
+      selectedDate = '';
+      selectedTime = '';
+      if (dateInput) dateInput.value = '';
+      timeSlotBtns.forEach(b => b.classList.remove('active'));
+      document.getElementById('booking-emirate').value = '';
+      document.getElementById('booking-address').value = '';
       
       modalVehicleDisplay.textContent = vehicleLabels[currentVehicleType];
       modalPlanName.textContent = planName;
@@ -228,6 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       renderAddons();
       updateTotals();
+      updateWizardUI();
       
       modal.classList.add('active');
       document.body.style.overflow = 'hidden'; // Prevent background scrolling
@@ -253,6 +363,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     confirmBtn.addEventListener('click', () => {
+      const emirate = document.getElementById('booking-emirate').value;
+      const address = document.getElementById('booking-address').value;
+      
+      if (!emirate || !address.trim()) {
+        alert('Please select an Emirate and provide your detailed address.');
+        return;
+      }
+
       const addonsSum = selectedAddons.reduce((sum, item) => sum + item.price, 0);
       const grandSum = currentPlanBasePrice + addonsSum;
       
@@ -266,6 +384,8 @@ document.addEventListener('DOMContentLoaded', () => {
         msg += `\n`;
       }
       
+      msg += `*Schedule:*\nDate: ${selectedDate}\nTime: ${selectedTime}\n\n`;
+      msg += `*Location:*\n${emirate}, ${address.trim()}\n\n`;
       msg += `*Total Price:* AED ${grandSum}\n\nPlease assist me with the booking.`;
       
       const url = `https://wa.me/971568300248?text=${encodeURIComponent(msg)}`;
