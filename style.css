@@ -804,8 +804,17 @@ img {
   transition: transform 0.3s ease;
 }
 
+/* Shrink Mid SUV image specifically because its source file has less transparent padding */
+.tab-btn[data-vehicle="midsuv"] .tab-icon {
+  transform: scale(0.82);
+}
+
 .tab-btn:hover .tab-icon {
   transform: scale(1.05);
+}
+
+.tab-btn[data-vehicle="midsuv"]:hover .tab-icon {
+  transform: scale(0.86);
 }
 
 .tab-btn:hover {
