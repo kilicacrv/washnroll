@@ -1,3 +1,21 @@
+// ==========================================
+// 🚨 TODO: REPLACE WITH YOUR FIREBASE CONFIG
+// ==========================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  // paste your config object here!
+};
+
+let app, db;
+try {
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+} catch(e) {
+  console.error("Firebase not configured correctly yet.");
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // ==========================================
@@ -371,7 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target === modal) closeModal();
     });
 
-    confirmBtn.addEventListener('click', () => {
+    confirmBtn.addEventListener('click', async () => {
       const emirate = document.getElementById('booking-emirate').value;
       const address = document.getElementById('booking-address').value;
       
@@ -383,6 +401,28 @@ document.addEventListener('DOMContentLoaded', () => {
       const addonsSum = selectedAddons.reduce((sum, item) => sum + item.price, 0);
       const grandSum = currentPlanBasePrice + addonsSum;
       
+      // 1. Save to Firebase (if configured)
+      if (db) {
+        try {
+          await addDoc(collection(db, "bookings"), {
+            planName: currentPlanName,
+            vehicleType: vehicleLabels[currentVehicleType],
+            addons: selectedAddons.map(a => a.name),
+            grandTotal: grandSum,
+            selectedDate: selectedDate,
+            selectedTime: selectedTime,
+            emirate: emirate,
+            address: address.trim(),
+            status: 'pending',
+            createdAt: serverTimestamp()
+          });
+          console.log("Booking saved to database!");
+        } catch (e) {
+          console.error("Error adding document: ", e);
+        }
+      }
+
+      // 2. Build WhatsApp Message
       let msg = `Hello Wash N Roll,\n\nI would like to book the *${currentPlanName}* for my *${vehicleLabels[currentVehicleType]}*.\n\n`;
       
       if (selectedAddons.length > 0) {
@@ -397,6 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
       msg += `*Location:*\n${emirate}, ${address.trim()}\n\n`;
       msg += `*Total Price:* AED ${grandSum}\n\nPlease assist me with the booking.`;
       
+      // 3. Open WhatsApp and Close Modal
       const url = `https://wa.me/971568300248?text=${encodeURIComponent(msg)}`;
       window.open(url, '_blank');
       closeModal();
