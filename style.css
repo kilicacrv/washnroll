@@ -770,8 +770,8 @@ img {
 .pricing-tabs {
   display: inline-flex;
   background-color: var(--bg-gray);
-  padding: 8px;
-  border-radius: 20px;
+  padding: 6px;
+  border-radius: 14px;
   margin: 0 auto 50px auto;
   border: 1px solid #e5e7eb;
   position: relative;
@@ -784,22 +784,22 @@ img {
   background: transparent;
   color: var(--text-muted);
   font-weight: 800;
-  padding: 10px 24px;
-  border-radius: 16px;
-  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.75rem;
   cursor: pointer;
   transition: all var(--transition-fast);
   font-family: 'Montserrat', sans-serif;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .tab-icon {
-  width: 90px;
-  height: 45px;
+  width: 60px;
+  height: 30px;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
