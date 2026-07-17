@@ -1,10 +1,8 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-// ==========================================
-// 🚨 TODO: REPLACE WITH YOUR SUPABASE CONFIG
-// ==========================================
-const supabaseUrl = 'YOUR_SUPABASE_URL_HERE'
-const supabaseKey = 'YOUR_SUPABASE_ANON_KEY_HERE'
+
+const supabaseUrl = 'https://fwdlzijqvcalwmibkdsk.supabase.co'
+const supabaseKey = 'sb_publishable_ATWyF8mF33kenQoVQvnejA_kQFfAveW'
 
 let supabase;
 try {
