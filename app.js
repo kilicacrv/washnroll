@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
       elite: '549',
       maintenance: '399',
       exterior_detail: '249',
-      interior_detail: '249',
+      interior_detail: '279',
       full_detail: '399'
     },
     midsuv: {
@@ -80,18 +80,18 @@ document.addEventListener('DOMContentLoaded', () => {
       premium: '449',
       elite: '649',
       maintenance: '499',
-      exterior_detail: '279',
-      interior_detail: '279',
-      full_detail: '449'
+      exterior_detail: '299',
+      interior_detail: '329',
+      full_detail: '499'
     },
     lrgsuv: {
       essential: '319',
       premium: '549',
       elite: '749',
       maintenance: '599',
-      exterior_detail: '309',
-      interior_detail: '309',
-      full_detail: '499'
+      exterior_detail: '349',
+      interior_detail: '379',
+      full_detail: '599'
     }
   };
 
