@@ -1,30 +1,16 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
 // ==========================================
-// 🚨 TODO: REPLACE WITH YOUR FIREBASE CONFIG
+// 🚨 TODO: REPLACE WITH YOUR SUPABASE CONFIG
 // ==========================================
-const firebaseConfig = {
-  // paste your config object here!
-  // apiKey: "...",
-  // authDomain: "...",
-  // projectId: "...",
-  // storageBucket: "...",
-  // messagingSenderId: "...",
-  // appId: "..."
-};
+const supabaseUrl = 'YOUR_SUPABASE_URL_HERE'
+const supabaseKey = 'YOUR_SUPABASE_ANON_KEY_HERE'
 
-let app, auth, db;
-
+let supabase;
 try {
-  // Initialize Firebase
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
+  supabase = createClient(supabaseUrl, supabaseKey)
 } catch (e) {
-  console.error("Firebase not configured correctly yet.", e);
+  console.error("Supabase not configured correctly yet.", e);
 }
 
 // UI Elements
@@ -40,101 +26,152 @@ const refreshBtn = document.getElementById('refresh-btn');
 // ==========================================
 // AUTHENTICATION
 // ==========================================
-if (auth) {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in
-      loginSection.style.display = 'none';
-      dashboardSection.style.display = 'block';
-      userEmailSpan.textContent = user.email;
-      loadBookings();
-    } else {
-      // User is signed out
-      loginSection.style.display = 'flex';
-      dashboardSection.style.display = 'none';
-      userEmailSpan.textContent = '';
-    }
+async function checkUser() {
+  if (!supabase) return;
+  const { data: { session } } = await supabase.auth.getSession();
+  
+  if (session) {
+    loginSection.style.display = 'none';
+    dashboardSection.style.display = 'block';
+    userEmailSpan.textContent = session.user.email;
+    loadBookings();
+  } else {
+    loginSection.style.display = 'flex';
+    dashboardSection.style.display = 'none';
+    userEmailSpan.textContent = '';
+  }
+}
+
+// Listen for auth changes
+if (supabase) {
+  supabase.auth.onAuthStateChange((event, session) => {
+    checkUser();
   });
 
-  loginForm.addEventListener('submit', (e) => {
+  loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('admin-email').value;
     const password = document.getElementById('admin-password').value;
 
-    signInWithEmailAndPassword(auth, email, password)
-      .catch((error) => {
-        loginError.textContent = error.message;
-        loginError.style.display = 'block';
-      });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (error) {
+      loginError.textContent = error.message;
+      loginError.style.display = 'block';
+    }
   });
 
-  logoutBtn.addEventListener('click', () => {
-    signOut(auth);
+  logoutBtn.addEventListener('click', async () => {
+    await supabase.auth.signOut();
   });
+
+  // Initial check
+  checkUser();
 }
 
 // ==========================================
-// DATABASE (FIRESTORE)
+// DATABASE (FIRESTORE -> SUPABASE)
 // ==========================================
-function loadBookings() {
-  if (!db) return;
+async function loadBookings() {
+  if (!supabase) return;
   
-  const q = query(collection(db, "bookings"), orderBy("createdAt", "desc"));
-  
-  // Real-time listener
-  onSnapshot(q, (snapshot) => {
-    bookingsBody.innerHTML = '';
-    
-    if (snapshot.empty) {
-      bookingsBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No bookings found.</td></tr>';
-      return;
-    }
+  // Fetch initial data
+  const { data: bookings, error } = await supabase
+    .from('bookings')
+    .select('*')
+    .order('created_at', { ascending: false });
 
-    snapshot.forEach((docSnapshot) => {
-      const data = docSnapshot.data();
-      const id = docSnapshot.id;
-      
-      const tr = document.createElement('tr');
-      
-      const dateStr = data.createdAt ? new Date(data.createdAt.toMillis()).toLocaleString() : 'N/A';
-      
-      tr.innerHTML = `
-        <td>
-          <div style="font-weight:700">${data.selectedDate || 'N/A'}</div>
-          <div style="color:var(--text-muted); font-size:0.85rem">${data.selectedTime || ''}</div>
-          <div style="color:var(--text-muted); font-size:0.75rem; margin-top:4px;">Booked: ${dateStr}</div>
-        </td>
-        <td>
-          <div style="font-weight:700">${data.planName}</div>
-          <div style="color:var(--text-muted); font-size:0.85rem">Addons: ${data.addons ? data.addons.join(', ') : 'None'}</div>
-        </td>
-        <td>${data.vehicleType}</td>
-        <td style="font-weight:800; color:var(--navy)">AED ${data.grandTotal}</td>
-        <td>
-          <div style="font-weight:600">${data.emirate}</div>
-          <div style="color:var(--text-muted); font-size:0.85rem">${data.address}</div>
-        </td>
-        <td>
-          <span class="status-badge status-${data.status || 'pending'}">${(data.status || 'pending').toUpperCase()}</span>
-        </td>
-        <td>
-          <button class="action-btn btn-complete" onclick="updateStatus('${id}', 'completed')">✓</button>
-          <button class="action-btn btn-cancel" onclick="updateStatus('${id}', 'cancelled')">✕</button>
-        </td>
-      `;
-      bookingsBody.appendChild(tr);
-    });
-  }, (error) => {
+  if (error) {
     console.error("Error fetching bookings: ", error);
+    return;
+  }
+
+  renderTable(bookings);
+
+  // Set up Real-time subscription
+  supabase
+    .channel('custom-all-channel')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'bookings' },
+      (payload) => {
+        console.log('Change received!', payload);
+        // Quick and dirty: just reload everything on any change
+        // In a large app, you'd patch the specific row in the DOM
+        loadBookingsSilently();
+      }
+    )
+    .subscribe();
+}
+
+async function loadBookingsSilently() {
+  if (!supabase) return;
+  const { data: bookings, error } = await supabase
+    .from('bookings')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (!error) {
+    renderTable(bookings);
+  }
+}
+
+function renderTable(bookings) {
+  bookingsBody.innerHTML = '';
+  
+  if (!bookings || bookings.length === 0) {
+    bookingsBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No bookings found.</td></tr>';
+    return;
+  }
+
+  bookings.forEach((data) => {
+    const tr = document.createElement('tr');
+    
+    // Supabase returns dates as ISO strings
+    const dateObj = new Date(data.created_at);
+    const dateStr = dateObj.toLocaleString();
+    
+    tr.innerHTML = `
+      <td>
+        <div style="font-weight:700">${data.selected_date || 'N/A'}</div>
+        <div style="color:var(--text-muted); font-size:0.85rem">${data.selected_time || ''}</div>
+        <div style="color:var(--text-muted); font-size:0.75rem; margin-top:4px;">Booked: ${dateStr}</div>
+      </td>
+      <td>
+        <div style="font-weight:700">${data.plan_name}</div>
+        <div style="color:var(--text-muted); font-size:0.85rem">Addons: ${data.addons && data.addons.length ? data.addons.join(', ') : 'None'}</div>
+      </td>
+      <td>${data.vehicle_type}</td>
+      <td style="font-weight:800; color:var(--navy)">AED ${data.grand_total}</td>
+      <td>
+        <div style="font-weight:600">${data.emirate}</div>
+        <div style="color:var(--text-muted); font-size:0.85rem">${data.address}</div>
+      </td>
+      <td>
+        <span class="status-badge status-${data.status || 'pending'}">${(data.status || 'pending').toUpperCase()}</span>
+      </td>
+      <td>
+        <button class="action-btn btn-complete" onclick="updateStatus('${data.id}', 'completed')">✓</button>
+        <button class="action-btn btn-cancel" onclick="updateStatus('${data.id}', 'cancelled')">✕</button>
+      </td>
+    `;
+    bookingsBody.appendChild(tr);
   });
 }
 
 // Global function to update status from inline onclick
 window.updateStatus = async (id, status) => {
-  if (!db) return;
+  if (!supabase) return;
   try {
-    const docRef = doc(db, "bookings", id);
-    await updateDoc(docRef, { status: status });
+    const { error } = await supabase
+      .from('bookings')
+      .update({ status: status })
+      .eq('id', id);
+
+    if (error) throw error;
   } catch (e) {
     console.error("Error updating document: ", e);
     alert("Could not update status.");
@@ -142,5 +179,5 @@ window.updateStatus = async (id, status) => {
 };
 
 if (refreshBtn) {
-  refreshBtn.addEventListener('click', loadBookings);
+  refreshBtn.addEventListener('click', loadBookingsSilently);
 }

@@ -1,19 +1,16 @@
 // ==========================================
-// 🚨 TODO: REPLACE WITH YOUR FIREBASE CONFIG
+// 🚨 TODO: REPLACE WITH YOUR SUPABASE CONFIG
 // ==========================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-const firebaseConfig = {
-  // paste your config object here!
-};
+const supabaseUrl = 'YOUR_SUPABASE_URL_HERE'
+const supabaseKey = 'YOUR_SUPABASE_ANON_KEY_HERE'
+let supabase;
 
-let app, db;
 try {
-  app = initializeApp(firebaseConfig);
-  db = getFirestore(app);
-} catch(e) {
-  console.error("Firebase not configured correctly yet.");
+  supabase = createClient(supabaseUrl, supabaseKey)
+} catch (e) {
+  console.error("Supabase not configured correctly yet.");
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -401,21 +398,22 @@ document.addEventListener('DOMContentLoaded', () => {
       const addonsSum = selectedAddons.reduce((sum, item) => sum + item.price, 0);
       const grandSum = currentPlanBasePrice + addonsSum;
       
-      // 1. Save to Firebase (if configured)
-      if (db) {
+      // 1. Save to Supabase (if configured)
+      if (supabase) {
         try {
-          await addDoc(collection(db, "bookings"), {
-            planName: currentPlanName,
-            vehicleType: vehicleLabels[currentVehicleType],
+          const { error } = await supabase.from('bookings').insert([{
+            plan_name: currentPlanName,
+            vehicle_type: vehicleLabels[currentVehicleType],
             addons: selectedAddons.map(a => a.name),
-            grandTotal: grandSum,
-            selectedDate: selectedDate,
-            selectedTime: selectedTime,
+            grand_total: grandSum,
+            selected_date: selectedDate,
+            selected_time: selectedTime,
             emirate: emirate,
             address: address.trim(),
-            status: 'pending',
-            createdAt: serverTimestamp()
-          });
+            status: 'pending'
+          }]);
+          
+          if (error) throw error;
           console.log("Booking saved to database!");
         } catch (e) {
           console.error("Error adding document: ", e);
