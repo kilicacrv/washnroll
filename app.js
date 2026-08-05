@@ -215,11 +215,56 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dateInput) {
       const today = new Date().toISOString().split('T')[0];
       dateInput.min = today;
+
+      // Listen for date changes to check availability
+      dateInput.addEventListener('change', async (e) => {
+        selectedDate = e.target.value;
+        await checkAvailability(selectedDate);
+      });
     }
+
+    const checkAvailability = async (dateStr) => {
+      if (!dateStr || !supabase) return;
+
+      // Reset all buttons to enabled initially
+      timeSlotBtns.forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove('active');
+        // Clear selected time if it gets disabled
+        selectedTime = '';
+      });
+
+      try {
+        // Fetch bookings for the selected date that are not cancelled
+        const { data: bookings, error } = await supabase
+          .from('bookings')
+          .select('selected_time')
+          .eq('selected_date', dateStr)
+          .neq('status', 'cancelled');
+
+        if (error) {
+          console.error("Error fetching availability:", error);
+          return;
+        }
+
+        const bookedTimes = bookings.map(b => b.selected_time);
+
+        // Disable buttons that match booked times
+        timeSlotBtns.forEach(btn => {
+          if (bookedTimes.includes(btn.getAttribute('data-time'))) {
+            btn.disabled = true;
+          }
+        });
+
+      } catch (err) {
+        console.error("Failed to check availability", err);
+      }
+    };
 
     const timeSlotBtns = document.querySelectorAll('.time-slot-btn');
     timeSlotBtns.forEach(btn => {
       btn.addEventListener('click', (e) => {
+        if (e.target.disabled) return;
         timeSlotBtns.forEach(b => b.classList.remove('active'));
         e.target.classList.add('active');
         selectedTime = e.target.getAttribute('data-time');
