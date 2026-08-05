@@ -446,9 +446,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const grandSum = currentPlanBasePrice + addonsSum;
       
       // 1. Save to Supabase (if configured)
+      let bookingId = null;
       if (supabase) {
         try {
-          const { error } = await supabase.from('bookings').insert([{
+          const { data, error } = await supabase.from('bookings').insert([{
             plan_name: currentPlanName,
             vehicle_type: vehicleLabels[currentVehicleType],
             addons: selectedAddons.map(a => a.name),
@@ -461,9 +462,10 @@ document.addEventListener('DOMContentLoaded', () => {
             address: address.trim(),
             status: 'pending',
             payment_status: 'unpaid'
-          }]);
+          }]).select();
           
           if (error) throw error;
+          bookingId = data[0].id;
           console.log("Booking saved to database!");
         } catch (e) {
           console.error("Error adding document: ", e);
@@ -487,10 +489,38 @@ document.addEventListener('DOMContentLoaded', () => {
       msg += `*Location:*\n${emirate}, ${address.trim()}\n\n`;
       msg += `*Total Price:* AED ${grandSum}\n\nPlease assist me with the booking.`;
       
-      // 3. Open WhatsApp and Close Modal
+      // 3. Open WhatsApp and Redirect to Stripe
       const url = `https://wa.me/971568300248?text=${encodeURIComponent(msg)}`;
       window.open(url, '_blank');
-      closeModal();
+      
+      confirmBtn.textContent = 'Redirecting to Payment...';
+      confirmBtn.disabled = true;
+
+      try {
+        const response = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            plan_name: currentPlanName,
+            grand_total: grandSum,
+            booking_id: bookingId || 'manual-booking',
+            customer_name: name,
+            vehicle_type: vehicleLabels[currentVehicleType]
+          })
+        });
+
+        const result = await response.json();
+        if (result.url) {
+          window.location.href = result.url;
+        } else {
+          alert('Could not initiate payment. Please contact us via WhatsApp.');
+          closeModal();
+        }
+      } catch (err) {
+        console.error('Checkout error:', err);
+        alert('Could not initiate payment. Please contact us via WhatsApp.');
+        closeModal();
+      }
     });
   }
 });

@@ -1,0 +1,12 @@
+{
+  "name": "washnroll",
+  "version": "1.0.0",
+  "description": "Wash N Roll website",
+  "scripts": {
+    "start": "echo 'Static HTML site' && exit 0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "stripe": "^16.8.0"
+  }
+}
