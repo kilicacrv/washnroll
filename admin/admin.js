@@ -39,30 +39,28 @@ function checkUser() {
   }
 }
 
-if (supabase) {
-  loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const username = document.getElementById('admin-username').value.trim();
-    const password = document.getElementById('admin-password').value.trim();
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const username = document.getElementById('admin-username').value.trim();
+  const password = document.getElementById('admin-password').value.trim();
 
-    if (username === 'admin.washnroll' && password === 'Kankanka1!') {
-      localStorage.setItem('adminLoggedIn', 'true');
-      loginError.style.display = 'none';
-      checkUser();
-    } else {
-      loginError.textContent = 'Invalid username or password.';
-      loginError.style.display = 'block';
-    }
-  });
-
-  logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('adminLoggedIn');
+  if (username === 'admin.washnroll' && password === 'Kankanka1!') {
+    localStorage.setItem('adminLoggedIn', 'true');
+    loginError.style.display = 'none';
     checkUser();
-  });
+  } else {
+    loginError.textContent = 'Invalid username or password.';
+    loginError.style.display = 'block';
+  }
+});
 
-  // Initial check
+logoutBtn.addEventListener('click', () => {
+  localStorage.removeItem('adminLoggedIn');
   checkUser();
-}
+});
+
+// Initial check
+checkUser();
 
 // ==========================================
 // DATABASE (FIRESTORE -> SUPABASE)
