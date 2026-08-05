@@ -11,56 +11,62 @@ try {
   console.error("Supabase not configured correctly yet.", e);
 }
 
-// UI Elements
-const loginSection = document.getElementById('login-section');
-const dashboardSection = document.getElementById('dashboard-section');
-const loginForm = document.getElementById('login-form');
-const loginError = document.getElementById('login-error');
-const logoutBtn = document.getElementById('logout-btn');
-const userEmailSpan = document.getElementById('user-email');
-const bookingsBody = document.getElementById('bookings-body');
-const refreshBtn = document.getElementById('refresh-btn');
+try {
+  // UI Elements
+  const loginSection = document.getElementById('login-section');
+  const dashboardSection = document.getElementById('dashboard-section');
+  const loginForm = document.getElementById('login-form');
+  const loginError = document.getElementById('login-error');
+  const logoutBtn = document.getElementById('logout-btn');
+  const userEmailSpan = document.getElementById('user-email');
+  const bookingsBody = document.getElementById('bookings-body');
+  const refreshBtn = document.getElementById('refresh-btn');
 
-// ==========================================
-// AUTHENTICATION
-// ==========================================
-function checkUser() {
-  const isLoggedIn = localStorage.getItem('adminLoggedIn');
-  
-  if (isLoggedIn === 'true') {
-    loginSection.style.display = 'none';
-    dashboardSection.style.display = 'block';
-    userEmailSpan.textContent = 'admin.washnroll';
-    loadBookings();
-  } else {
-    loginSection.style.display = 'flex';
-    dashboardSection.style.display = 'none';
-    userEmailSpan.textContent = '';
+  // ==========================================
+  // AUTHENTICATION
+  // ==========================================
+  function checkUser() {
+    const isLoggedIn = localStorage.getItem('adminLoggedIn');
+    
+    if (isLoggedIn === 'true') {
+      loginSection.style.display = 'none';
+      dashboardSection.style.display = 'block';
+      userEmailSpan.textContent = 'admin.washnroll';
+      loadBookings();
+    } else {
+      loginSection.style.display = 'flex';
+      dashboardSection.style.display = 'none';
+      userEmailSpan.textContent = '';
+    }
   }
-}
 
-loginForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const username = document.getElementById('admin-username').value.trim();
-  const password = document.getElementById('admin-password').value.trim();
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const username = document.getElementById('admin-username').value.trim();
+    const password = document.getElementById('admin-password').value.trim();
 
-  if (username === 'admin.washnroll' && password === 'Kankanka1!') {
-    localStorage.setItem('adminLoggedIn', 'true');
-    loginError.style.display = 'none';
+    if (username === 'admin.washnroll' && password === 'Kankanka1!') {
+      localStorage.setItem('adminLoggedIn', 'true');
+      loginError.style.display = 'none';
+      checkUser();
+    } else {
+      loginError.textContent = 'Invalid username or password.';
+      loginError.style.display = 'block';
+    }
+  });
+
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('adminLoggedIn');
     checkUser();
-  } else {
-    loginError.textContent = 'Invalid username or password.';
-    loginError.style.display = 'block';
-  }
-});
+  });
 
-logoutBtn.addEventListener('click', () => {
-  localStorage.removeItem('adminLoggedIn');
+  // Initial check
   checkUser();
-});
 
-// Initial check
-checkUser();
+} catch (err) {
+  alert("JS Initialization error: " + err.message);
+  console.error(err);
+}
 
 // ==========================================
 // DATABASE (FIRESTORE -> SUPABASE)
