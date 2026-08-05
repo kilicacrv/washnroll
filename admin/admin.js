@@ -24,14 +24,13 @@ const refreshBtn = document.getElementById('refresh-btn');
 // ==========================================
 // AUTHENTICATION
 // ==========================================
-async function checkUser() {
-  if (!supabase) return;
-  const { data: { session } } = await supabase.auth.getSession();
+function checkUser() {
+  const isLoggedIn = localStorage.getItem('adminLoggedIn');
   
-  if (session) {
+  if (isLoggedIn === 'true') {
     loginSection.style.display = 'none';
     dashboardSection.style.display = 'block';
-    userEmailSpan.textContent = session.user.email;
+    userEmailSpan.textContent = 'admin.washnroll';
     loadBookings();
   } else {
     loginSection.style.display = 'flex';
@@ -40,30 +39,25 @@ async function checkUser() {
   }
 }
 
-// Listen for auth changes
 if (supabase) {
-  supabase.auth.onAuthStateChange((event, session) => {
-    checkUser();
-  });
-
-  loginForm.addEventListener('submit', async (e) => {
+  loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const email = document.getElementById('admin-email').value;
+    const username = document.getElementById('admin-username').value;
     const password = document.getElementById('admin-password').value;
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
-
-    if (error) {
-      loginError.textContent = error.message;
+    if (username === 'admin.washnroll' && password === 'Kankanka1!') {
+      localStorage.setItem('adminLoggedIn', 'true');
+      loginError.style.display = 'none';
+      checkUser();
+    } else {
+      loginError.textContent = 'Invalid username or password.';
       loginError.style.display = 'block';
     }
   });
 
-  logoutBtn.addEventListener('click', async () => {
-    await supabase.auth.signOut();
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('adminLoggedIn');
+    checkUser();
   });
 
   // Initial check
