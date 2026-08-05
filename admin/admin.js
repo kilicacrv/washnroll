@@ -137,14 +137,23 @@ function renderTable(bookings) {
         <div style="color:var(--text-muted); font-size:0.75rem; margin-top:4px;">Booked: ${dateStr}</div>
       </td>
       <td>
-        <div style="font-weight:700">${data.plan_name}</div>
-        <div style="color:var(--text-muted); font-size:0.85rem">Addons: ${data.addons && data.addons.length ? data.addons.join(', ') : 'None'}</div>
+        <div style="font-weight:700">${data.customer_name || 'N/A'}</div>
+        <div style="color:var(--text-muted); font-size:0.85rem">${data.phone_number || 'N/A'}</div>
       </td>
-      <td>${data.vehicle_type}</td>
-      <td style="font-weight:800; color:var(--navy)">AED ${data.grand_total}</td>
+      <td>
+        <div style="font-weight:700">${data.plan_name} <span style="font-weight:normal">(${data.vehicle_type})</span></div>
+        <div style="color:var(--text-muted); font-size:0.85rem">Addons: ${data.addons && data.addons.length ? data.addons.join(', ') : 'None'}</div>
+        <div style="font-weight:800; color:var(--navy); margin-top:4px;">AED ${data.grand_total}</div>
+      </td>
       <td>
         <div style="font-weight:600">${data.emirate}</div>
         <div style="color:var(--text-muted); font-size:0.85rem">${data.address}</div>
+      </td>
+      <td>
+        <select class="form-input" style="padding: 4px; font-size: 0.85rem; width: 100px;" onchange="updatePaymentStatus('${data.id}', this.value)">
+          <option value="unpaid" ${data.payment_status === 'unpaid' ? 'selected' : ''}>Unpaid</option>
+          <option value="paid" ${data.payment_status === 'paid' ? 'selected' : ''}>Paid</option>
+        </select>
       </td>
       <td>
         <span class="status-badge status-${data.status || 'pending'}">${(data.status || 'pending').toUpperCase()}</span>
@@ -157,6 +166,22 @@ function renderTable(bookings) {
     bookingsBody.appendChild(tr);
   });
 }
+
+// Global function to update payment status
+window.updatePaymentStatus = async (id, paymentStatus) => {
+  if (!supabase) return;
+  try {
+    const { error } = await supabase
+      .from('bookings')
+      .update({ payment_status: paymentStatus })
+      .eq('id', id);
+
+    if (error) throw error;
+  } catch (e) {
+    console.error("Error updating payment status: ", e);
+    alert("Could not update payment status.");
+  }
+};
 
 // Global function to update status from inline onclick
 window.updateStatus = async (id, status) => {

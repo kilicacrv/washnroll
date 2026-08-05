@@ -395,6 +395,8 @@ document.addEventListener('DOMContentLoaded', () => {
       selectedTime = '';
       if (dateInput) dateInput.value = '';
       timeSlotBtns.forEach(b => b.classList.remove('active'));
+      document.getElementById('booking-name').value = '';
+      document.getElementById('booking-phone').value = '';
       document.getElementById('booking-emirate').value = '';
       document.getElementById('booking-address').value = '';
       
@@ -430,11 +432,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     confirmBtn.addEventListener('click', async () => {
+      const name = document.getElementById('booking-name').value.trim();
+      const phone = document.getElementById('booking-phone').value.trim();
       const emirate = document.getElementById('booking-emirate').value;
       const address = document.getElementById('booking-address').value;
       
-      if (!emirate || !address.trim()) {
-        alert('Please select an Emirate and provide your detailed address.');
+      if (!name || !phone || !emirate || !address.trim()) {
+        alert('Please fill out your name, phone number, and detailed address.');
         return;
       }
 
@@ -451,9 +455,12 @@ document.addEventListener('DOMContentLoaded', () => {
             grand_total: grandSum,
             selected_date: selectedDate,
             selected_time: selectedTime,
+            customer_name: name,
+            phone_number: phone,
             emirate: emirate,
             address: address.trim(),
-            status: 'pending'
+            status: 'pending',
+            payment_status: 'unpaid'
           }]);
           
           if (error) throw error;
@@ -465,6 +472,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 2. Build WhatsApp Message
       let msg = `Hello Wash N Roll,\n\nI would like to book the *${currentPlanName}* for my *${vehicleLabels[currentVehicleType]}*.\n\n`;
+      
+      msg += `*Customer Details:*\nName: ${name}\nPhone: ${phone}\n\n`;
       
       if (selectedAddons.length > 0) {
         msg += `*Selected Add-ons:*\n`;
