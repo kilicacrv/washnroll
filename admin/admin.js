@@ -42,8 +42,8 @@ function checkUser() {
 if (supabase) {
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const username = document.getElementById('admin-username').value;
-    const password = document.getElementById('admin-password').value;
+    const username = document.getElementById('admin-username').value.trim();
+    const password = document.getElementById('admin-password').value.trim();
 
     if (username === 'admin.washnroll' && password === 'Kankanka1!') {
       localStorage.setItem('adminLoggedIn', 'true');
