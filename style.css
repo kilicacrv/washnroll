@@ -1673,6 +1673,34 @@ img {
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
   }
+
+  /* Compact date & time section on mobile */
+  .modal-body {
+    padding: 0 16px 16px;
+  }
+  .modal-section-title {
+    font-size: 0.85rem;
+    margin-bottom: 6px !important;
+  }
+  .date-input-styled {
+    font-size: 15px !important;
+    padding: 10px 14px !important;
+    border: 2px solid var(--navy);
+    border-radius: 10px;
+    color: var(--navy);
+    font-weight: 600;
+    width: 100%;
+    background-color: #f8fafc;
+    box-sizing: border-box;
+  }
+  .time-slots-grid {
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .time-slot-btn {
+    padding: 7px 2px;
+    font-size: 0.72rem;
+  }
 }
 
 /* Wizard Steps & Progress */
@@ -1723,21 +1751,23 @@ img {
 /* Time Slots Grid */
 .time-slots-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
   margin-top: 10px;
 }
 
 .time-slot-btn {
   background: var(--white);
   border: 1px solid #cbd5e1;
-  padding: 10px;
+  padding: 8px 4px;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--navy);
   cursor: pointer;
   transition: all 0.2s ease;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .time-slot-btn:hover {
