@@ -291,14 +291,14 @@ document.addEventListener('DOMContentLoaded', () => {
         step1.style.display = 'block';
         backBtn.style.display = 'none';
         nextBtn.style.display = 'block';
-        nextBtn.textContent = 'Next: Choose Time';
+        nextBtn.textContent = 'Next: Choose Time & Date';
         confirmBtn.style.display = 'none';
         modalTotalsContainer.style.display = 'flex';
       } else if (currentStep === 2) {
         step2.style.display = 'block';
         backBtn.style.display = 'block';
         nextBtn.style.display = 'block';
-        nextBtn.textContent = 'Next: Delivery Address';
+        nextBtn.textContent = 'Next: Service Address';
         confirmBtn.style.display = 'none';
         modalTotalsContainer.style.display = 'none';
       } else if (currentStep === 3) {
