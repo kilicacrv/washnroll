@@ -409,12 +409,25 @@ document.addEventListener('DOMContentLoaded', () => {
       updateWizardUI();
       
       modal.classList.add('active');
-      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      // Mobile-safe body scroll lock: prevents page jump on iOS/Android
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.overflow = 'hidden';
     };
 
     const closeModal = () => {
       modal.classList.remove('active');
+      // Restore scroll position after unlocking body
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
       document.body.style.overflow = '';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
     };
 
     checkoutBtns.forEach(btn => {
