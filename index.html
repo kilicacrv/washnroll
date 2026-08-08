@@ -890,7 +890,7 @@
             <span id="modal-plan-price">AED 399</span>
           </div>
 
-          <h4 class="modal-section-title">Add-Ons</h4>
+          <h4 class="modal-section-title">Add-Ons <span style="font-size: 14px; font-weight: normal; color: var(--text-muted);">(Optional)</span></h4>
           <div id="modal-addons-container" class="modal-addons-list">
             <!-- Add-ons will be injected here by JS -->
           </div>
@@ -899,7 +899,9 @@
         <!-- STEP 2: DATE & TIME -->
         <div class="wizard-step" id="wizard-step-2" style="display: none;">
           <h4 class="modal-section-title">Select Date</h4>
-          <input type="date" id="booking-date" class="form-input mb-4" required min="">
+          <div style="position: relative; margin-bottom: 24px;">
+            <input type="date" id="booking-date" class="form-input" required min="" style="font-size: 18px; padding: 16px 20px; border: 2px solid var(--navy); border-radius: 12px; cursor: pointer; color: var(--navy); font-weight: 600; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.05); background-color: #f8fafc;">
+          </div>
           
           <h4 class="modal-section-title mt-4">Select Time Slot</h4>
           <div class="time-slots-grid" id="time-slots-container">
