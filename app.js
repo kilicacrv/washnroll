@@ -485,27 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // 2. Build WhatsApp Message
-      let msg = `Hello Wash N Roll,\n\nI would like to book the *${currentPlanName}* for my *${vehicleLabels[currentVehicleType]}*.\n\n`;
-      
-      msg += `*Customer Details:*\nName: ${name}\nPhone: ${phone}\n\n`;
-      
-      if (selectedAddons.length > 0) {
-        msg += `*Selected Add-ons:*\n`;
-        selectedAddons.forEach(a => {
-          msg += `- ${a.name} (AED ${a.price})\n`;
-        });
-        msg += `\n`;
-      }
-      
-      msg += `*Schedule:*\nDate: ${selectedDate}\nTime: ${selectedTime}\n\n`;
-      msg += `*Location:*\n${emirate}, ${address.trim()}\n\n`;
-      msg += `*Total Price:* AED ${grandSum}\n\nPlease assist me with the booking.`;
-      
-      // 3. Open WhatsApp and Redirect to Stripe
-      const url = `https://wa.me/971568300248?text=${encodeURIComponent(msg)}`;
-      window.open(url, '_blank');
-      
+      // 2. Redirect to Stripe Checkout
       confirmBtn.textContent = 'Redirecting to Payment...';
       confirmBtn.disabled = true;
 
