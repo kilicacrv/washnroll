@@ -447,12 +447,23 @@ img {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  background-image: url('hero_car_wash.jpg');
-  background-size: cover;
-  background-position: center;
   padding-top: 120px;
   padding-bottom: 60px;
   overflow: hidden;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('hero_car_wash.jpg');
+  background-size: cover;
+  background-position: center;
+  transform: scaleX(-1);
+  z-index: 0;
 }
 
 .hero-overlay {
