@@ -175,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   let currentPlanBasePrice = 0;
   let currentPlanName = '';
+  let currentPlanId = '';
   let selectedAddons = [];
 
   const checkoutBtns = document.querySelectorAll('.checkout-btn');
@@ -385,6 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const openModal = (planId, planName) => {
+      currentPlanId = planId;
       currentPlanName = planName;
       currentPlanBasePrice = parseInt(pricingData[currentVehicleType][planId], 10);
       
@@ -490,6 +492,8 @@ document.addEventListener('DOMContentLoaded', () => {
       confirmBtn.disabled = true;
 
       try {
+        const isSubscription = ['essential', 'premium', 'elite'].includes(currentPlanId);
+        
         const response = await fetch('/api/checkout', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -498,7 +502,8 @@ document.addEventListener('DOMContentLoaded', () => {
             grand_total: grandSum,
             booking_id: bookingId || 'manual-booking',
             customer_name: name,
-            vehicle_type: vehicleLabels[currentVehicleType]
+            vehicle_type: vehicleLabels[currentVehicleType],
+            is_subscription: isSubscription
           })
         });
 
