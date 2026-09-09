@@ -484,6 +484,10 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log("Booking saved to database!");
         } catch (e) {
           console.error("Error adding document: ", e);
+          alert("Sistemde bir hata oluştu: Veritabanına bağlanılamadı (" + (e.message || "Bilinmeyen Hata") + "). Lütfen yöneticinizle iletişime geçin.");
+          confirmBtn.textContent = 'Confirm Booking';
+          confirmBtn.disabled = false;
+          return; // Stop execution, do not redirect to Stripe
         }
       }
 
