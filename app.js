@@ -62,27 +62,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // Price Database
   const pricingData = {
     sedan: {
-      essential: '219',
-      premium: '349',
-      elite: '549',
+      essential: '319',
+      premium: '449',
+      elite: '749',
       maintenance: '399',
       exterior_detail: '249',
       interior_detail: '279',
       full_detail: '399'
     },
     midsuv: {
-      essential: '269',
-      premium: '449',
-      elite: '649',
+      essential: '369',
+      premium: '549',
+      elite: '849',
       maintenance: '499',
       exterior_detail: '299',
       interior_detail: '329',
       full_detail: '499'
     },
     lrgsuv: {
-      essential: '319',
-      premium: '549',
-      elite: '749',
+      essential: '419',
+      premium: '649',
+      elite: '949',
       maintenance: '599',
       exterior_detail: '349',
       interior_detail: '379',
