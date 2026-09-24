@@ -11,9 +11,8 @@ try {
   console.error("Supabase not configured correctly yet.", e);
 }
 
-try {
-  // UI Elements
-  const loginSection = document.getElementById('login-section');
+// UI Elements
+const loginSection = document.getElementById('login-section');
   const dashboardSection = document.getElementById('dashboard-section');
   const loginForm = document.getElementById('login-form');
   const loginError = document.getElementById('login-error');
@@ -62,12 +61,6 @@ try {
 
   // Initial check
   checkUser();
-
-} catch (err) {
-  alert("JS Initialization error: " + err.message);
-  console.error(err);
-}
-
 // ==========================================
 // DATABASE (FIRESTORE -> SUPABASE)
 // ==========================================
